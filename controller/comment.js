@@ -11,8 +11,9 @@ module.exports = {
         })
     },
      read(req,res){
-         Comment.find({status : 1}).then(function(comments){
-             res.json();
+         Comment.find({approved : true,status : 1}).then(function(comments){
+             
+             res.json(comments);
          }).catch(function(err){
              res.json(err);
          })
@@ -21,17 +22,19 @@ module.exports = {
         return (req, res) => {
             console.log(req.params.post_id)
             if(actionType === 'approve') {
-                Comment.find({post : req.params.post_id}).then(function(comments){
-                comments.forEach(function(comment) {
-                        if(comment.approved === false){
-                            comment.status = 0;
-                        }
-                        console.log(comment)
-                    }, this);
-                res.json(comments)
-                }).catch(function(err){
-                    console.log(err)
-                });
+                Comment.update(
+                    {
+                        post : req.params.postid , 
+                        _id : req.params.commentid
+                    },
+                    { $set : { approved : true}}
+                )
+                    .then(function(comments){
+                
+                        res.json(comments)
+                    }).catch(function(err){
+                        console.log(err)
+                    });
             }
         }
     }
