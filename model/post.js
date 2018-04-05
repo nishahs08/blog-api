@@ -10,6 +10,7 @@ const postSchema = mongoose.Schema ({
          ref : 'Categories'
     },
     tags : [],
+    publish_status : Boolean,
     title : String,
     body : String
 }) ;

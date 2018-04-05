@@ -13,6 +13,10 @@ router.get('/categories',categoriesCtrl.read);
 
 router.post('/posts',postCtrl.create);
 router.get('/posts',postCtrl.read);
+//router.put('/post/:id',postCtrl.edit('publish'));
+//router.put('/post/:id',postCtrl.edit('unpublish'));
+router.put('/post/:id',postCtrl.edit('edit'));
+router.delete('/post/:id',postCtrl.delete)
 
 router.get('/post/:id/comments',commentCtrl.read);
 router.post('/post/:id/comments',commentCtrl.create);

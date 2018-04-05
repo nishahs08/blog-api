@@ -21,5 +21,52 @@ module.exports = {
             .catch(function(err){
                 res.json(err) 
             })
+    },
+    edit(action){
+        return (req,res) => {
+        if(action === 'publish'){
+            Post
+                .update({_id : req.params.id},{$set : {publish_status : true}})
+                .then(function(post){
+                    res.json(post)
+                })
+                .catch(function(err){
+                    res.json(err);
+                })
+        }
+        else if(action === 'unpublish'){
+             Post
+                .update({_id : req.params.id},{$set: {publish_status : false}})
+                .then(function(post){
+                    res.json(post)
+                })
+                .catch(function(err){
+                    res.json(err);
+                })
+        }
+        else if(action === 'edit'){
+            Post
+                .update({_id : req.params.id},{$set: {title : req.body.title , body : req.body.body }})
+                .then(function(post){
+                    res.json(post)
+                })
+                .catch(function(err){
+                    res.json(err);
+                })
+        }
+        else{
+            console.log("error");
+        }
+    }},
+
+    delete(req,res){
+        Post
+            .findByIdAndRemove({_id : req.params.id})
+            .then(function(post){
+                res.json(post)
+            })
+            .catch(function(err){
+                res.json(err)
+            })
     }
 };

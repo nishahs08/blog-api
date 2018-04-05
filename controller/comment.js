@@ -11,7 +11,7 @@ module.exports = {
         })
     },
      read(req,res){
-         Comment.find({}).then(function(comments){
+         Comment.find({status : 1}).then(function(comments){
              res.json();
          }).catch(function(err){
              res.json(err);
