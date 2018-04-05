@@ -1,16 +1,39 @@
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema ({
-    email : String ,
-    type : ['Admin','Contributor'],
-    password : String,
-    contact : String,
-    name : String ,
-    profile_Picture : { 
-        data : Buffer , contentType : String
+    email : {
+        type : String,
+        required : [true , 'email required']
+    } ,
+    type : {
+         type : String,
+        enum : ['Admin', 'Contributer'],
     },
-    occupation : String,
-    organisation : String
+
+    password : {
+        type : String,
+        required : [true , 'password is required']
+    },
+    contact : {
+        type : String,
+        required : [true , 'contact is required']
+    },
+    name : {
+        type : String,
+        required : [true , 'name is requird']
+    } ,
+    profile_Picture : { 
+        data : Buffer , 
+        contentType : String
+    },
+    occupation : {
+        type : String,
+        default : ""
+    },
+    organisation : {
+        type : String,
+        default : ""
+    }
 
 }) ;
 
