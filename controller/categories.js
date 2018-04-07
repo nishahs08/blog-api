@@ -1,21 +1,38 @@
+var Promise = require("bluebird");
 const Categories = require('../model/categories.js');
 
 module.exports = {
-    create(req,res){
-        const category = new Categories(req.body);
-        category.save()
-        .then(function(category){
-            res.json(category);
-        })
-        .catch(function(err){ res.json(err)})   
-     },
+    create(req, res) {
+        return Promise.coroutine(function *() {
+            const category = new Categories(req.body);
+            const response = yield category.save();
+            return response;
+        })()
+            .then(response => res.json(response))
+            .catch(err => res.json(err));
+    },
 
-     read(req,res){
-         Categories.find({}).then(function(categories){
-             res.json(categories)
-         }).catch(function(err){
-             res.json(err)
-         })
-     }
-}
+    read(req,res){
+        return Promise.coroutine(function *() {
+            return yield Categories.find({});
+        })()
+            .then(response => res.json(response))
+            .catch(err => res.json(err));
+    },
 
+    delete(req,res){
+        return Promise.coroutine(function *(){
+            return yield Categories.findByIdAndRemove(req.params.id);
+        })()
+            .then(response => res.json(response))
+            .catch(err=>res.json(err))
+        },
+    
+    edit(req,res){
+        return Promise.coroutine(function *(){
+            return yield Categories.findByIdAndUpdate(req.params.id);
+        })()
+            .then(response => res.json(response))
+            .catch(err => res.json(err))
+    }
+    }
