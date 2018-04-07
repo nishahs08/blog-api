@@ -2,40 +2,25 @@ const User = require('../model/user.js');
 const Comment = require('../model/comments.js');
 module.exports = {
     read(req,res)  {
-         User.find({}).then(function(users){
-                
-                res.json(users);
-            }).catch(function(err){
-                res.json(err);
-            })
+        return User.find({})
+            .then(users => res.json(users))
+            .catch(err => res.json(err));
     },
 
     create(req,res){
-        console.log(req.body);
-        const id = User.find({email : req.body.email});
         let user = new User(req.body);
-        user
+        return user
             .save()
-            .then(function(user){
-                res.json(user);
-            })
-            .catch(function(err){
-                res.json(err);
-            })
+            .then(users => res.json(users))
+            .catch(err => res.json(err));
     },
-
 
     delete(req,res){
-        User.findByIdAndRemove({_id : req.params.id}).then(function(user){
-            res.json(user);
-        }).catch(function(err){
-            res.json(user)
-        })
-    },
-
-    
-        
-}     
+        return User.findByIdAndRemove({_id : req.params.id})
+            .then(user => res.json(user))
+            .catch(err => res.json(err));
+    }     
+}
 
 
 
