@@ -12,61 +12,59 @@ module.exports = {
                 res.json(err)                                                                                                
             })
     },
-    read(req,res){
-        Post
-            .find({})
-            .then(function(posts){
-                res.json(posts)
-            })
-            .catch(function(err){
-                res.json(err) 
-            })
+    async read(req,res){
+        try{
+        const posts = await Post.find({});
+         res.json(posts);
+        }catch(err){
+         res.json(err);
+        }
+      
     },
     edit(action){
-        return (req,res) => {
+        return async (req,res) => {
         if(action === 'publish'){
-            Post
-                .update({_id : req.params.id},{$set : {publish_status : true}})
-                .then(function(post){
-                    res.json(post)
-                })
-                .catch(function(err){
-                    res.json(err);
-                })
+            try{
+                const posts = await Post.update({_id : req.params.id},{$set : {publish_status : true}});
+                res.json(posts);
+            }catch(err){
+                res.json(err);
+            }
+
+                
         }
         else if(action === 'unpublish'){
-             Post
-                .update({_id : req.params.id},{$set: {publish_status : false}})
-                .then(function(post){
-                    res.json(post)
-                })
-                .catch(function(err){
-                    res.json(err);
-                })
+            
+             try{
+                const posts = await Post.update({_id : req.params.id},{$set : {publish_status : false}});
+                res.json(posts);
+            }catch(err){
+                res.json(err);
+            }
+
         }
+
+
         else if(action === 'edit'){
-            Post
-                .update({_id : req.params.id},{$set: {title : req.body.title , body : req.body.body }})
-                .then(function(post){
-                    res.json(post)
-                })
-                .catch(function(err){
-                    res.json(err);
-                })
+           try{
+                const posts = await Post.update({_id : req.params.id},{$set: {title : req.body.title , body : req.body.body }})
+                res.json(posts);
+            }catch(err){
+                res.json(err);
+            }
         }
         else{
             console.log("error");
         }
     }},
 
-    delete(req,res){
-        Post
-            .findByIdAndRemove({_id : req.params.id})
-            .then(function(post){
-                res.json(post)
-            })
-            .catch(function(err){
-                res.json(err)
-            })
+    async delete(req,res){
+        try{
+        const post = await Post.findByIdAndRemove(req.params.id);
+            return res.json(post);
+        }catch(err){
+            return res.json(err)
+        }
+
     }
 };
